@@ -21,10 +21,9 @@ int BigInt::charToInt(char c)
 
 void BigInt::cleanZero()
 {
-	for (int i = 0; i < this->binary.size(); i++)
+	while (this->binary[0] == 0)
 	{
-		if (binary[i] == 1) return;
-		this->binary.erase(this->binary.begin(), this->binary.begin() + 1);
+		this->binary.erase(this->binary.begin());
 	}
 }
 
@@ -146,6 +145,7 @@ BigInt BigInt::operator+(BigInt int2)
 	}
 
 	this->cleanZero();
+	returnValue.cleanZero();
 
 	return returnValue;
 }
@@ -167,6 +167,7 @@ void BigInt::operator+=(long long int int2)
 {
 	BigInt int2ToFunction;
 	int2ToFunction.binary = intToBinary(int2);
+	if (int2 < 0) int2ToFunction.ujemna = true;
 	this->operator+=(int2ToFunction);
 }
 
@@ -188,9 +189,135 @@ BigInt BigInt::operator-(BigInt int2)
 	//return BigInt();
 	BigInt returnValue;
 
+	if (this->ujemna && !int2.ujemna)
+	{
+		this->ujemna = false;
+		return operator+(int2);
+	}
+	if (!this->ujemna && int2.ujemna)
+	{
+		int2.ujemna = false;
+		return operator+(int2);
+	}
 
+	if (this->ujemna && int2.ujemna)
+	{
+		this->ujemna = false;
+		int2.ujemna = false;
+		return int2.operator-(*this);
+	}
+
+	bool inverted = 0;
+
+	if (*this < int2)
+	{
+		returnValue.ujemna = true;
+		inverted = true;
+	}
+	else
+	{
+		returnValue.ujemna = false;
+	}
+
+	while (int2.binary.size() < this->binary.size())
+	{
+		bool value = 0;
+		int2.binary.insert(int2.binary.begin(), false);
+	}
+	while (int2.binary.size() > this->binary.size())
+	{
+		bool value = 0;
+		this->binary.insert(this->binary.begin(), false);
+	}
+
+	for (int i = this->binary.size() - 1; i >= 0; i--)
+	{
+		if (inverted)
+		{
+			int value = 0;
+			if (int2.binary[i] == 0 && this->binary[i] == 0)
+			{
+				value = 0;
+			}
+			if (int2.binary[i] == 0 && this->binary[i] == 1)
+			{
+				value = 1;
+				for (int j = i-1; j >= 0; j--)
+				{
+					if (int2.binary[j] == 1)
+					{
+						int2.binary[j] = 0;
+						break;
+					}
+					else
+					{
+						int2.binary[j] = 1;
+					}
+				}
+			}
+			if (int2.binary[i] == 1 && this->binary[i] == 0)
+			{
+				value = 1;
+			}
+			if (int2.binary[i] == 1 && this->binary[i] == 1)
+			{
+				value = 0;
+			}
+			returnValue.binary.insert(returnValue.binary.begin(), value);
+		}
+		else
+		{
+			int value = 0;
+			if (this->binary[i] == 0 && int2.binary[i] == 0)
+			{
+				value = 0;
+			}
+			if (this->binary[i] == 0 && int2.binary[i] == 1)
+			{
+				value = 1;
+				for (int j = i - 1; j >= 0; j--)
+				{
+					if (this->binary[j] == 1)
+					{
+						this->binary[j] = 0;
+						break;
+					}
+					else
+					{
+						this->binary[j] = 1;
+					}
+				}
+			}
+			if (this->binary[i] == 1 && int2.binary[i] == 0)
+			{
+				value = 1;
+			}
+			if (this->binary[i] == 1 && int2.binary[i] == 1)
+			{
+				value = 0;
+			}
+			returnValue.binary.insert(returnValue.binary.begin(), value);
+		}
+	}
+	
+	int2.cleanZero();
+	this->cleanZero();
+	returnValue.cleanZero();
 
 	return returnValue;
+}
+
+void BigInt::operator-=(BigInt int2)
+{
+	*this = *this - int2;
+}
+
+void BigInt::operator-=(long long int int2)
+{
+	BigInt int2ToFunction;
+	int2ToFunction.binary = intToBinary(int2);
+	if (int2 < 0) int2ToFunction.ujemna = true;
+	this->operator-=(int2ToFunction);
 }
 
 bool BigInt::operator<(BigInt int2)

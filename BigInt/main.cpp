@@ -13,13 +13,16 @@ int main()
 	bignumber[2] = 5;
 	//bignumber[4] = 125;
 
+
+
 	cout << "0: " << bignumber[0] <<  endl;
 
 	//bignumber[0] += bignumber[1] + 15 + 5;
 
 	bignumber[0] += 15;
+	bignumber[0] = bignumber[0] - bignumber[1];
 	//bignumber[3] = bignumber[0] + bignumber[1];
-	cout << bignumber[0] + bignumber[1] << endl;
+	//cout << bignumber[0] + bignumber[1] << endl;
 
 	if (bignumber[0] < bignumber[1]) cout << "0 is smaller" << endl;
 	if (bignumber[1] < bignumber[0]) cout << "1 is smaller" << endl;
