@@ -2,7 +2,20 @@
 
 using namespace std;
 
-int BigInt::potega(int a, int pot)
+string BigInt::potega(string a, long long int pot)
+{
+	string cache = a;
+	if (pot == 0) return "1";
+	if (pot == 1) return a;
+	for (long long int i = 1; i < pot; i++)
+	{
+		a = multipleDecimal(a, cache);
+	}
+	return a;
+
+}
+
+int BigInt::szybkaPotega(int a, int pot)
 {
 	int cache = a;
 	if (pot == 0) return 1;
@@ -24,6 +37,14 @@ void BigInt::cleanZero()
 	while (this->binary[0] == 0)
 	{
 		this->binary.erase(this->binary.begin());
+	}
+}
+
+void BigInt::cleanZero(string & int1)
+{
+	while (int1[0] == 0)
+	{
+		int1.erase(0);
 	}
 }
 
@@ -83,18 +104,104 @@ vector<bool> BigInt::intToBinary(long long int c)
 	return returnValue;
 }
 
+string BigInt::multipleDecimal(string int1, string int2)
+{
+	string returnValue = "0";
+
+	vector<string> rtInt;
+
+	int rtIntiterator = 0;
+
+	for (int i = int2.size() - 1; i >= 0; i--)
+	{
+		int przejscie = 0;
+		rtInt.push_back("");
+		for (int j = int1.size() - 1; j >= 0; j--)
+		{
+			int value = ( int2[i] - 48 ) * ( int1[j] - 48 );
+			value += przejscie;
+			przejscie = value / 10;
+			rtInt[rtIntiterator].insert(0, to_string(value % 10));
+		}
+		if (przejscie > 0)
+		{
+			rtInt[rtIntiterator].insert(0, to_string(przejscie));
+		}
+		rtIntiterator++;
+	}
+
+
+	for (int i = 0; i < rtIntiterator; i++)
+	{
+		for (int j = 0; j < i; j++)
+		{
+			rtInt[i].insert(rtInt[i].size(), "0");
+		}
+		returnValue = this->addDecimal(returnValue, rtInt[i]);
+		//cout << "RtInt[" << i << "]: " << rtInt[i] << endl;
+	}
+
+	//cout << "rtIterator size: " << rtIntiterator << endl;
+	//cout << "int1 size: " << int1.size() << endl;
+	//cout << "int2 size: " << int2.size() << endl;
+
+
+	return returnValue;
+}
+
+string BigInt::addDecimal(string int1, string int2)
+{
+	string returnValue;
+
+
+	while (int1.size() < int2.size())
+	{
+		bool value = 0;
+		int1.insert(0, "0");
+	}
+	while (int1.size() > int2.size())
+	{
+		bool value = 0;
+		int2.insert(0, "0");
+	}
+
+	short przejscie = 0;
+
+	for (int i = int1.size() - 1; i >= 0; i--)
+	{
+		short suma = int1[i] - 48 + int2[i] - 48;
+		if (przejscie > 0)
+		{
+			suma += przejscie;
+			przejscie = 0;
+		}
+		przejscie = suma / 10;
+		returnValue.insert(0, to_string( suma % 10));
+	}
+
+	if (przejscie > 0)
+	{
+		returnValue.insert(0, to_string(przejscie));
+		przejscie = 0;
+	}
+
+	return returnValue;
+}
+
 string BigInt::toDecimal()
 {
 	string returnValue;
 
-	int returnValueInt = 0;
+
+	int potegaS = 1024;
+	//cout << "Test potegi." << " 2^" << potegaS << " = " << potega("2", potegaS) <<  endl;
+
+
+	//cout << "Multiple decimal test, 6248762876427868473268742638746784326876342568423657832647586234765783246578623785623784567823657826347856237845672834657823657826387456289376587236478562347856237845678236457823645789236457896 * 672386457826345237856782364576243785689723657329848923975786432785623785678293645786234875627834657823645782647582634578264879562378456728346578234657826947859627834562783462786578264578236457263478596237845627893657823965782365782369457823657829643578926 = \"" << this->multipleDecimal("6248762876427868473268742638746784326876342568423657832647586234765783246578623785623784567823657826347856237845672834657823657826387456289376587236478562347856237845678236457823645789236457896", "672386457826345237856782364576243785689723657329848923975786432785623785678293645786234875627834657823645782647582634578264879562378456728346578234657826947859627834562783462786578264578236457263478596237845627893657823965782365782369457823657829643578926") << "\"" << endl;
 	for (int i = 0; i < binary.size(); i++)
 	{
-		if (binary[i] == 1) returnValueInt += potega(2, binary.size() - i - 1);
+		if (binary[i] == 1) returnValue = this->addDecimal(returnValue, potega("2", binary.size() - i - 1));
 	}
-
-	returnValue = to_string(returnValueInt);
-
 	return returnValue;
 }
 

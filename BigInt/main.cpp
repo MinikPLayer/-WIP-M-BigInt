@@ -19,7 +19,7 @@ int main()
 
 	//bignumber[0] += bignumber[1] + 15 + 5;
 
-	bignumber[0] += 15;
+	//bignumber[0] += 15;
 	bignumber[0] = bignumber[0] - bignumber[1];
 	//bignumber[3] = bignumber[0] + bignumber[1];
 	//cout << bignumber[0] + bignumber[1] << endl;
