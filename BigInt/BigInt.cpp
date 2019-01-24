@@ -34,9 +34,9 @@ int BigInt::charToInt(char c)
 
 void BigInt::cleanZero()
 {
-	while (this->binary[0] == 0)
+	while (binary.size() != 0 && binary[0] == 0)
 	{
-		this->binary.erase(this->binary.begin());
+		binary.erase(binary.begin());
 	}
 }
 
@@ -190,17 +190,14 @@ string BigInt::addDecimal(string int1, string int2)
 
 string BigInt::toDecimal()
 {
-	string returnValue;
-
-
+	string returnValue = "0";
 	int potegaS = 1024;
-	//cout << "Test potegi." << " 2^" << potegaS << " = " << potega("2", potegaS) <<  endl;
+	string aktualnaWartoscPotegi = "1";
 
-
-	//cout << "Multiple decimal test, 6248762876427868473268742638746784326876342568423657832647586234765783246578623785623784567823657826347856237845672834657823657826387456289376587236478562347856237845678236457823645789236457896 * 672386457826345237856782364576243785689723657329848923975786432785623785678293645786234875627834657823645782647582634578264879562378456728346578234657826947859627834562783462786578264578236457263478596237845627893657823965782365782369457823657829643578926 = \"" << this->multipleDecimal("6248762876427868473268742638746784326876342568423657832647586234765783246578623785623784567823657826347856237845672834657823657826387456289376587236478562347856237845678236457823645789236457896", "672386457826345237856782364576243785689723657329848923975786432785623785678293645786234875627834657823645782647582634578264879562378456728346578234657826947859627834562783462786578264578236457263478596237845627893657823965782365782369457823657829643578926") << "\"" << endl;
-	for (int i = 0; i < binary.size(); i++)
+	for (int i = binary.size() - 1; i >= 0; i--)
 	{
-		if (binary[i] == 1) returnValue = this->addDecimal(returnValue, potega("2", binary.size() - i - 1));
+		if (binary[i] == 1) returnValue = this->addDecimal(returnValue, aktualnaWartoscPotegi);
+		aktualnaWartoscPotegi = multipleDecimal(aktualnaWartoscPotegi, "2");
 	}
 	return returnValue;
 }
@@ -251,6 +248,7 @@ BigInt BigInt::operator+(BigInt int2)
 		przejscie = 0;
 	}
 
+
 	this->cleanZero();
 	returnValue.cleanZero();
 
@@ -261,7 +259,7 @@ BigInt BigInt::operator+(long long int int2)
 {
 	BigInt int2ToFunction;
 	int2ToFunction.binary = intToBinary(int2);
-
+	if (int2 < 0) int2ToFunction.ujemna = true;
 	return this->operator+(int2ToFunction);
 }
 
@@ -414,6 +412,60 @@ BigInt BigInt::operator-(BigInt int2)
 	return returnValue;
 }
 
+BigInt BigInt::operator-(long long int int2)
+{
+	BigInt int2ToFunction;
+	int2ToFunction.binary = intToBinary(int2);
+	if (int2 < 0) int2ToFunction.ujemna = true;
+	return this->operator-(int2ToFunction);
+}
+
+BigInt BigInt::operator*(BigInt int2)      // TODO: Dodaæ obs³ugê liczb ujmenych
+{
+	BigInt returnValue;
+
+	if ((this->ujemna && !int2.ujemna )|| (!this->ujemna && int2.ujemna))
+	{
+		returnValue.ujemna = true;
+	}
+
+	vector<BigInt> rtInts;
+
+	int rtInstIterator = 0;
+
+	for (int i = int2.binary.size() - 1; i >= 0; i--)
+	{
+		rtInts.push_back(BigInt());
+		for (int j = this->binary.size() - 1; j >= 0; j--)
+		{
+			bool value = int2.binary[i] * this->binary[j];
+			rtInts[rtInstIterator].binary.insert(rtInts[rtInstIterator].binary.begin(), value);
+		}
+		rtInstIterator++;
+	}
+
+	for (int i = 0; i < rtInts.size(); i++)
+	{
+		for (int j = 0; j < i; j++)
+		{
+			rtInts[i].binary.insert(rtInts[i].binary.begin() + rtInts[i].binary.size(), 0);
+		}
+		//cout << "Adding rtInts[" << i << "] = " << rtInts[i] << "to returnvalue which before adding is: " << returnValue << endl;
+		returnValue += rtInts[i];
+		
+	}
+
+	return returnValue;
+}
+
+BigInt BigInt::operator*(long long int int2)
+{
+	BigInt int2ToFunction;
+	int2ToFunction.binary = intToBinary(int2);
+	if (int2 < 0) int2ToFunction.ujemna = true;
+	return this->operator*(int2ToFunction);
+}
+
 void BigInt::operator-=(BigInt int2)
 {
 	*this = *this - int2;
@@ -425,6 +477,19 @@ void BigInt::operator-=(long long int int2)
 	int2ToFunction.binary = intToBinary(int2);
 	if (int2 < 0) int2ToFunction.ujemna = true;
 	this->operator-=(int2ToFunction);
+}
+
+void BigInt::operator*=(BigInt int2)
+{
+	*this = *this * int2;
+}
+
+void BigInt::operator*=(long long int int2)
+{
+	BigInt int2ToFunction;
+	int2ToFunction.binary = intToBinary(int2);
+	if (int2 < 0) int2ToFunction.ujemna = true;
+	this->operator*=(int2ToFunction);
 }
 
 bool BigInt::operator<(BigInt int2)
@@ -505,6 +570,38 @@ bool BigInt::operator>=(BigInt int2)
 		return 1;
 		break;
 	}
+}
+
+bool BigInt::operator<(long long int int2)
+{
+	BigInt int2ToFunction;
+	int2ToFunction.binary = intToBinary(int2);
+	if (int2 < 0) int2ToFunction.ujemna = true;
+	return this->operator<(int2ToFunction);
+}
+
+bool BigInt::operator<=(long long int int2)
+{
+	BigInt int2ToFunction;
+	int2ToFunction.binary = intToBinary(int2);
+	if (int2 < 0) int2ToFunction.ujemna = true;
+	return this->operator<=(int2ToFunction);
+}
+
+bool BigInt::operator>(long long int int2)
+{
+	BigInt int2ToFunction;
+	int2ToFunction.binary = intToBinary(int2);
+	if (int2 < 0) int2ToFunction.ujemna = true;
+	return this->operator>(int2ToFunction);
+}
+
+bool BigInt::operator>=(long long int int2)
+{
+	BigInt int2ToFunction;
+	int2ToFunction.binary = intToBinary(int2);
+	if (int2 < 0) int2ToFunction.ujemna = true;
+	return this->operator>=(int2ToFunction); return false;
 }
 
 ostream & operator<<(ostream & stream, BigInt bigint)
