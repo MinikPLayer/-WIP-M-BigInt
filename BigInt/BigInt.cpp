@@ -466,6 +466,40 @@ BigInt BigInt::operator*(long long int int2)
 	return this->operator*(int2ToFunction);
 }
 
+BigInt BigInt::operator/(BigInt int2)
+{
+	//return BigInt();
+
+
+	BigInt actualBinary;
+
+	BigInt returnValue;
+
+	for (int i = 0; i < this->binary.size(); i++)
+	{
+		actualBinary.binary.insert(actualBinary.binary.begin() + actualBinary.binary.size(), this->binary[i]);
+		if (actualBinary >= int2)
+		{
+			actualBinary = actualBinary - int2;
+			returnValue.binary.insert(returnValue.binary.begin() + returnValue.binary.size(), 1);
+		}
+		else
+		{
+			returnValue.binary.insert(returnValue.binary.begin() + returnValue.binary.size(), 0);
+		}
+	}
+
+	return returnValue;
+}
+
+BigInt BigInt::operator/(long long int int2)
+{
+	BigInt int2ToFunction;
+	int2ToFunction.binary = intToBinary(int2);
+	if (int2 < 0) int2ToFunction.ujemna = true;
+	return this->operator/(int2ToFunction);
+}
+
 void BigInt::operator-=(BigInt int2)
 {
 	*this = *this - int2;
@@ -490,6 +524,19 @@ void BigInt::operator*=(long long int int2)
 	int2ToFunction.binary = intToBinary(int2);
 	if (int2 < 0) int2ToFunction.ujemna = true;
 	this->operator*=(int2ToFunction);
+}
+
+void BigInt::operator/=(BigInt int2)
+{
+	*this = *this / int2;
+}
+
+void BigInt::operator/=(long long int int2)
+{
+	BigInt int2ToFunction;
+	int2ToFunction.binary = intToBinary(int2);
+	if (int2 < 0) int2ToFunction.ujemna = true;
+	this->operator/=(int2ToFunction);
 }
 
 bool BigInt::operator<(BigInt int2)

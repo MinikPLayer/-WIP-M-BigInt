@@ -10,55 +10,20 @@ int main()
 {
 	BigInt bignumber[3];
 
-	bignumber[0] = 5;
-	bignumber[1] = 95;
+	bignumber[0] = 132478923748;
+	bignumber[1] = 12312312;
+
+	bignumber[1] *= 1237891273;
+	bignumber[1] *= 1238901283;
 
 	cout << "BigNumber[1]: " <<  bignumber[1] << endl;
 
-	bignumber[2] = 5;
+	//bignumber[2] = 5;
 	//bignumber[4] = 125;
 
 	//bignumber[0] = bignumber[0] * bignumber[1];
 
-	int maxPotega = 50;
-
-	clock_t tR;
-	tR = clock();
-	for (int i = 2; i <= maxPotega; i++)
-	{
-		bignumber[0] *= 5;
-		cout << "5^" << i << " = " << bignumber[0] << endl;
-	}
-
-	tR = clock() - tR;
-
-	cout << "Time requiered to 5^" << maxPotega << " with cout: " << tR / (float)CLOCKS_PER_SEC << "s" << endl;
-
-	bignumber[0] = 5;
-
-	tR = clock();
-	for (int i = 2; i <= maxPotega; i++)
-	{
-		bignumber[0] *= 5;
-		//cout << "5^" << i << "" << endl;
-	}
-
-	tR = clock() - tR;
-
-	cout << "Time requiered to 5^" << maxPotega << " without cout: " << tR / (float)CLOCKS_PER_SEC << "s" << endl;
-
-	bignumber[0] = 5;
-
-	tR = clock();
-	for (int i = 2; i <= maxPotega; i++)
-	{
-		bignumber[0] *= bignumber[2];
-		cout << "5^" << i << endl;
-	}
-
-	tR = clock() - tR;
-
-	cout << "Time requiered to 5^" << maxPotega << " without cout using already defined class: " << tR / (float)CLOCKS_PER_SEC << "s" << endl;
+	cout << bignumber[1] << " / " << bignumber[0] << " = " << bignumber[1] / bignumber[0] << endl;
 
 	cout << "DONE" << endl;
 
