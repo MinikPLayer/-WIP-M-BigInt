@@ -8,43 +8,13 @@ using namespace std;
 
 int main()
 {
+
+	
+
 	BigInt bignumber[3];
 
-	bignumber[0] = 132478923748;
-	bignumber[1] = 12312312;
-
-	bignumber[1] *= 1237891273;
-	bignumber[1] *= 1238901283;
-
-	cout << "BigNumber[1]: " <<  bignumber[1] << endl;
-
-	//bignumber[2] = 5;
-	//bignumber[4] = 125;
-
-	//bignumber[0] = bignumber[0] * bignumber[1];
-
-	cout << bignumber[1] << " / " << bignumber[0] << " = " << bignumber[1] / bignumber[0] << endl;
-
-	cout << "DONE" << endl;
-
-	system("PAUSE");
-
-	//cout << "0: " << bignumber[0] <<  endl;
-
-	//bignumber[0] += bignumber[1] + 15 + 5;
-
-	//bignumber[0] += 15;
-	//bignumber[0] = bignumber[0] - bignumber[1];
-	//bignumber[3] = bignumber[0] + bignumber[1];
-	//cout << bignumber[0] + bignumber[1] << endl;
-	//cout << "5 * 5 = " << bignumber[0] * 1238712637826 << endl;
-
-	if (bignumber[0] < bignumber[1]) cout << "0 is smaller" << endl;
-	if (bignumber[1] < bignumber[0]) cout << "1 is smaller" << endl;
-	if (bignumber[0] > bignumber[1]) cout << "0 is bigger" << endl;
-	if (bignumber[1] > bignumber[0]) cout << "1 is bigger" << endl;
-	if (bignumber[0] >= bignumber[0]) cout << "0 is bigger or equal 0" << endl;
-	if (bignumber[0] > bignumber[0]) cout << "0 is bigger than 0" << endl;
+	bignumber[0] = 232478923748;
+	bignumber[1] = 232478923755;
 
 	cout << "Binary: ";
 	
@@ -53,6 +23,51 @@ int main()
 		cout << bignumber[0].binary[i];
 	}
 
-	cout << "\nDecimal: " << bignumber[0] <<  endl;
+	cout << "\nBinary: ";
+	bignumber[0] = ~bignumber[0];	
+
+	cout << bignumber[0].toBinary() << endl;
+
+	//cout << "Binary: ";
+	bignumber[0] = ~bignumber[0];
+	
+
+	cout << "0: " << bignumber[0].toBinary() << endl;
+	cout << "1: " << bignumber[1].toBinary() << endl;
+
+	bignumber[0] = bignumber[0] | bignumber[1];
+	cout << "|: " << bignumber[0].toBinary() << endl;
+
+	bignumber[0] = 232478923748;
+
+	cout << endl;
+
+	cout << "0: " << bignumber[0].toBinary() << endl;
+	cout << "1: " << bignumber[1].toBinary() << endl;
+
+	bignumber[0] = bignumber[0] & bignumber[1];
+	cout << "&: " << bignumber[0].toBinary() << endl;
+
+
+	bignumber[0] = 232478923748;
+	cout << endl;
+
+
+	cout << "0: " << bignumber[0].toBinary() << endl;
+	cout << "1: " << bignumber[1].toBinary() << endl;
+
+	bignumber[0] = bignumber[0] ^ bignumber[1];
+	cout << "^: " << bignumber[0].toBinary() << endl;
+
+	bignumber[0] = 232478923748;
+	cout << endl;
+
+	cout << "0: " << bignumber[0].toBinary() << endl;
+	cout << "1: " << bignumber[1].toBinary() << endl;
+
+	bignumber[0] = bignumber[0] << 5;
+	cout << ">> " << bignumber[0].toBinary() << endl;
+
+	cout << "\nDecimal: " << bignumber[0] << endl;
 	system("PAUSE");
 }
