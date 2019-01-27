@@ -664,6 +664,46 @@ BigInt BigInt::operator<<(long long int int2)
 	return returnValue;
 }
 
+void BigInt::operator|=(BigInt int2)
+{
+	*this = *this | int2;
+}
+
+void BigInt::operator|=(long long int int2)
+{
+	*this = *this | int2;
+}
+
+void BigInt::operator&=(BigInt int2)
+{
+	*this = *this & int2;
+}
+
+void BigInt::operator&=(long long int int2)
+{
+	*this = *this & int2;
+}
+
+void BigInt::operator^=(BigInt int2)
+{
+	*this = *this ^ int2;
+}
+
+void BigInt::operator^=(long long int int2)
+{
+	*this = *this ^ int2;
+}
+
+void BigInt::operator>>=(long long int int2)
+{
+	*this = *this >> int2;
+}
+
+void BigInt::operator<<=(long long int int2)
+{
+	*this = *this << int2;
+}
+
 void BigInt::operator-=(BigInt int2)
 {
 	*this = *this - int2;

@@ -29,6 +29,15 @@ public:
 
 	void invert();
 
+	void operator+=(BigInt int2);
+	void operator+=(long long int int2);
+	void operator-=(BigInt int2);
+	void operator-=(long long int int2);
+	void operator*=(BigInt int2);
+	void operator*=(long long int int2);
+	void operator=(BigInt int2);
+	void operator=(long long int int2);
+
 	BigInt operator+(BigInt int2);
 	BigInt operator+(long long int int2);
 	BigInt operator-(BigInt int2);
@@ -49,14 +58,14 @@ public:
 	BigInt operator>>(long long int int2);
 	BigInt operator<<(long long int int2);
 	
-	void operator+=(BigInt int2);
-	void operator+=(long long int int2);
-	void operator-=(BigInt int2);
-	void operator-=(long long int int2);
-	void operator*=(BigInt int2);
-	void operator*=(long long int int2);
-	void operator=(BigInt int2);
-	void operator= (long long int int2);
+	void operator|=(BigInt int2);
+	void operator|=(long long int int2);
+	void operator&=(BigInt int2);
+	void operator&=(long long int int2);
+	void operator^=(BigInt int2);
+	void operator^=(long long int int2);
+	void operator>>=(long long int int2);
+	void operator<<=(long long int int2);
 
 	void operator++();
 	void operator--();

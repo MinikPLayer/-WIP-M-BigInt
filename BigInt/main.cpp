@@ -45,7 +45,7 @@ int main()
 	cout << "0: " << bignumber[0].toBinary() << endl;
 	cout << "1: " << bignumber[1].toBinary() << endl;
 
-	bignumber[0] = bignumber[0] & bignumber[1];
+	bignumber[0] &= bignumber[1];
 	cout << "&: " << bignumber[0].toBinary() << endl;
 
 
@@ -56,7 +56,7 @@ int main()
 	cout << "0: " << bignumber[0].toBinary() << endl;
 	cout << "1: " << bignumber[1].toBinary() << endl;
 
-	bignumber[0] = bignumber[0] ^ bignumber[1];
+	bignumber[0] ^= bignumber[1];
 	cout << "^: " << bignumber[0].toBinary() << endl;
 
 	bignumber[0] = 232478923748;
@@ -65,7 +65,7 @@ int main()
 	cout << "0: " << bignumber[0].toBinary() << endl;
 	cout << "1: " << bignumber[1].toBinary() << endl;
 
-	bignumber[0] = bignumber[0] << 5;
+	bignumber[0] >>= 5;
 	cout << ">> " << bignumber[0].toBinary() << endl;
 
 	cout << "\nDecimal: " << bignumber[0] << endl;
