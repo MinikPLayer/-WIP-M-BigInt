@@ -1,4 +1,4 @@
-# -WIP-M-BigInt
+# M-BigInt
 Trying to write my own BigInt implementation in C++
 
 Simple C++ class named BigInt which is an integrer with infinite maximum value.
@@ -12,7 +12,5 @@ Just add #include "BigInt.hpp" / #include <BigInt.hpp> and declare a new object 
 Usage is the same as int. ( +, +
 -=, <<, etc )
 
-[WIP]
-- Not all operators are included 
 
 
