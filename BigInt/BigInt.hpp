@@ -21,6 +21,9 @@ public:
 	void cleanZero(string & int1);
 	short isBigger(BigInt int2);
 	vector<bool> intToBinary(long long int c);
+	vector<bool> stringToBinary(string c);
+	string divideStringByTwo(string int1);
+	bool stringModuloTwo(string str1);
 public:
 	vector<bool> binary;
 
@@ -37,6 +40,7 @@ public:
 	void operator*=(long long int int2);
 	void operator=(BigInt int2);
 	void operator=(long long int int2);
+	void operator=(string int2);
 
 	BigInt operator+(BigInt int2);
 	BigInt operator+(long long int int2);
@@ -46,6 +50,8 @@ public:
 	BigInt operator*(long long int int2);
 	BigInt operator/(BigInt int2);
 	BigInt operator/(long long int int2);
+	BigInt operator%(BigInt int2);
+	BigInt operator%(long long int int2);
 
 	BigInt operator~();
 	BigInt operator|(BigInt int2);
@@ -66,6 +72,8 @@ public:
 	void operator^=(long long int int2);
 	void operator>>=(long long int int2);
 	void operator<<=(long long int int2);
+	void operator%=(BigInt int2);
+	void operator%=(long long int int2);
 
 	void operator++();
 	void operator--();

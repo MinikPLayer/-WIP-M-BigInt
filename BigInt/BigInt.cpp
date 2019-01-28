@@ -44,41 +44,43 @@ void BigInt::cleanZero(string & int1)
 {
 	while (int1[0] == 0)
 	{
-		int1.erase(0);
+		int1.erase(0,1);
 	}
 }
 
 short BigInt::isBigger(BigInt int2)
 {
+	BigInt thisCopy = *this;
+	thisCopy.cleanZero();
 	bool invert = 0;
-	if (this->ujemna && !int2.ujemna)
+	if (thisCopy.ujemna && !int2.ujemna)
 	{
 		return true;
 	}
-	if (!this->ujemna && int2.ujemna)
+	if (!thisCopy.ujemna && int2.ujemna)
 	{
 		return false;
 	}
-	if (this->ujemna && int2.ujemna)
+	if (thisCopy.ujemna && int2.ujemna)
 	{
 		invert = true;
 	}
 
-	if (this->binary.size() < int2.binary.size())
+	if (thisCopy.binary.size() < int2.binary.size())
 	{
 		if (invert) return false;
 		return true;
 	}
-	if (this->binary.size() > int2.binary.size())
+	if (thisCopy.binary.size() > int2.binary.size())
 	{
 		if (invert) return true;
 		return false;
 	}
-	for (int i = 0; i < this->binary.size(); i++)
+	for (int i = 0; i < thisCopy.binary.size(); i++)
 	{
-		if (this->binary[i] != int2.binary[i])
+		if (thisCopy.binary[i] != int2.binary[i])
 		{
-			if (this->binary[i] > int2.binary[i])
+			if (thisCopy.binary[i] > int2.binary[i])
 			{
 				if (invert) return true;
 				return false;
@@ -100,6 +102,94 @@ vector<bool> BigInt::intToBinary(long long int c)
 	{
 		returnValue.insert(returnValue.begin(), c % 2);
 		c /= 2;
+	}
+	return returnValue;
+}
+
+string BigInt::divideStringByTwo(string int1)
+{
+	if (int1.length() == 0) return "0";
+
+	string actualBinary;
+
+	string returnValue;
+
+	int additionalValue = 0;
+
+	for (int i = 0; i < int1.length(); i++)
+	{
+		string cache = "";
+		cache = int1[i];
+		actualBinary.insert(actualBinary.length(), cache);
+		
+		int value = 0;
+		int exitValue = 0;
+		value = atoi(actualBinary.c_str());
+		if(value >= 2)
+		{
+			
+			//value += 10 * additionalValue;
+			exitValue = value / 2;
+			
+			returnValue.insert(returnValue.length(), to_string(exitValue));
+			additionalValue = value % 2;
+			actualBinary = to_string(additionalValue);
+			
+		}
+		else
+		{
+
+			returnValue.insert(returnValue.length(), "0");
+		}
+		//cout << "Value: " << value << " Exit Value: " << exitValue << " additionalValue: " << additionalValue << " actualBinary: " << actualBinary << " returnValue: " << returnValue << endl;
+		//system("PAUSE");
+	}
+
+	if (additionalValue > 0)
+	{
+		//returnValue.insert(returnValue.length(), to_string(10 * additionalValue / 2));
+	}
+
+	//if (returnValue.length() == 0) returnValue = "1";
+	while (returnValue[0] == '0')
+	{
+		//cout << returnValue << endl;
+		returnValue.erase(0, 1);
+		if (returnValue.length() == 0)
+		{
+			returnValue = "0";
+			break;
+		}
+	}
+
+	//cout << int1 << " / 2 = " << returnValue << endl;
+
+	//if (returnValue.length() == 0) returnValue = "0";
+
+
+
+	return returnValue;
+}
+
+bool BigInt::stringModuloTwo(string str1)
+{
+	string str2 = "";
+	str2 = str1[str1.length() - 1];
+	int value = atoi(str2.c_str());
+	//cout << "Dla " << str1 << " value = " << value << endl;
+	return value % 2;
+}
+
+
+
+vector<bool> BigInt::stringToBinary(string c)
+{
+	vector<bool> returnValue;
+	while (c != "0")
+	{
+		returnValue.insert(returnValue.begin(), stringModuloTwo(c));
+		c = divideStringByTwo(c);
+		//cout << "C: " << c << endl;
 	}
 	return returnValue;
 }
@@ -299,6 +389,18 @@ void BigInt::operator=(long long int int2)
 	if (int2 < 0) this->ujemna = true;
 }
 
+void BigInt::operator=(string int2)
+{
+	if (int2[0] == '-')
+	{
+		this->ujemna = true;
+		int2.erase(0,1);
+	}
+
+	this->binary = stringToBinary(int2);
+
+}
+
 void BigInt::invert()
 {
 	*this = ~*this;
@@ -435,11 +537,11 @@ BigInt BigInt::operator-(long long int int2)
 	return this->operator-(int2ToFunction);
 }
 
-BigInt BigInt::operator*(BigInt int2)      // TODO: Dodaæ obs³ugê liczb ujmenych
+BigInt BigInt::operator*(BigInt int2) 
 {
 	BigInt returnValue;
 
-	if ((this->ujemna && !int2.ujemna )|| (!this->ujemna && int2.ujemna))
+	if ((this->ujemna && !int2.ujemna ) || (!this->ujemna && int2.ujemna))
 	{
 		returnValue.ujemna = true;
 	}
@@ -481,21 +583,28 @@ BigInt BigInt::operator*(long long int int2)
 	return this->operator*(int2ToFunction);
 }
 
-BigInt BigInt::operator/(BigInt int2)  // TODO: DODAC OBSLUGE LICZB UJEMNYCH
+BigInt BigInt::operator/(BigInt int2)
 {
-
-
 	BigInt actualBinary;
 
 	BigInt returnValue;
+
+
+	if ((this->ujemna && !int2.ujemna) || (!this->ujemna && int2.ujemna))
+	{
+		returnValue.ujemna = true;
+	}
 
 	for (int i = 0; i < this->binary.size(); i++)
 	{
 		actualBinary.binary.insert(actualBinary.binary.begin() + actualBinary.binary.size(), this->binary[i]);
 		if (actualBinary >= int2)
 		{
+			//cout << "BEFORE: "<< actualBinary.toBinary() << endl;
 			actualBinary = actualBinary - int2;
+			//cout << "AFTER : " << actualBinary.toBinary() << endl;
 			returnValue.binary.insert(returnValue.binary.begin() + returnValue.binary.size(), 1);
+			
 		}
 		else
 		{
@@ -512,6 +621,35 @@ BigInt BigInt::operator/(long long int int2)
 	int2ToFunction.binary = intToBinary(int2);
 	if (int2 < 0) int2ToFunction.ujemna = true;
 	return this->operator/(int2ToFunction);
+}
+
+BigInt BigInt::operator%(BigInt int2)
+{
+	BigInt value = *this / int2;
+
+	bool ujemna = this->ujemna;
+	if (ujemna) this->ujemna = false;
+
+	BigInt returnValue = *this - ( value * int2 );
+
+	//cout << "*this: " << *this << " Value: " << value * int2 << " returnValue: " << returnValue << endl;
+
+	if (ujemna)
+	{
+		this->ujemna = true;
+		returnValue.ujemna = true;
+	}
+
+	return returnValue;
+}
+
+BigInt BigInt::operator%(long long int int2)
+{
+	BigInt int2ToFunction;
+	int2ToFunction.binary = intToBinary(int2);
+	if (int2 < 0) int2ToFunction.ujemna = true;
+	//cout << "int2: " << int2 << " after bigint change: " << int2ToFunction << endl;
+	return this->operator%(int2ToFunction);
 }
 
 BigInt BigInt::operator~()
@@ -702,6 +840,16 @@ void BigInt::operator>>=(long long int int2)
 void BigInt::operator<<=(long long int int2)
 {
 	*this = *this << int2;
+}
+
+void BigInt::operator%=(BigInt int2)
+{
+	*this = *this % int2;
+}
+
+void BigInt::operator%=(long long int int2)
+{
+	*this = *this % int2;
 }
 
 void BigInt::operator-=(BigInt int2)
