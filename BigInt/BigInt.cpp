@@ -878,14 +878,30 @@ void BigInt::operator*=(long long int int2)
 	this->operator*=(int2ToFunction);
 }
 
-void BigInt::operator++()
+BigInt& BigInt::operator++()
 {
 	*this += 1;
+	return *this;
 }
 
-void BigInt::operator--()
+BigInt& BigInt::operator--()
 {
 	*this -= 1;
+	return *this;
+}
+
+BigInt BigInt::operator++(int)
+{
+	BigInt result = *this;
+	++(*this);
+	return result;
+}
+
+BigInt BigInt::operator--(int)
+{
+	BigInt result = *this;
+	(--*this);
+	return result;
 }
 
 void BigInt::operator/=(BigInt int2)
@@ -1016,6 +1032,8 @@ bool BigInt::operator>=(long long int int2)
 ostream & operator<<(ostream & stream, BigInt bigint)
 {
 	if (bigint.ujemna) cout << "-";
-	cout << bigint.toDecimal();
+	//cout << bigint.toDecimal();
+	//stream << bigint.binary << endl;
+	stream << bigint.toDecimal();
 	return stream;
 }

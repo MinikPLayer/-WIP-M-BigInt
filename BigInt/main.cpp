@@ -25,13 +25,16 @@ int main()
 	
 	bignumber[0] = divValue;
 
-	cout << "DivValue: " << divValue << " bignumber: " << bignumber[0] << endl;
+	//cout << "DivValue: " << divValue << " bignumber: " << bignumber[0] << endl;
 
-	cout << divValue << " % " << moduloNumber << " = " << bignumber[0] % moduloNumber << endl;
+	//cout << divValue << " % " << moduloNumber << " = " << bignumber[0] % moduloNumber << endl;
 	//cout << divValue << " / " << moduloNumber << " = " << bignumber[0] / moduloNumber * moduloNumber << endl;
 
 	//cout << "Binary: " << bignumber[0].toBinary() << endl;
 	
+	cout << "Before: " << bignumber[0]++ << endl;
+	cout << "After : " << ++bignumber[0] << endl;
+
 	system("PAUSE");
 
 	cout << "Binary: ";

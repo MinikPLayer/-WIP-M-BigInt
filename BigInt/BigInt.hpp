@@ -75,8 +75,11 @@ public:
 	void operator%=(BigInt int2);
 	void operator%=(long long int int2);
 
-	void operator++();
-	void operator--();
+	BigInt& operator++();
+	BigInt& operator--();
+
+	BigInt operator++(int);
+	BigInt operator--(int);
 
 	void operator/=(BigInt int2);
 	void operator/=(long long int int2);
